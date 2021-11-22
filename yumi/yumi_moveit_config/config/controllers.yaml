@@ -12,7 +12,7 @@ controller_list:
       - yumi_robl_joint_6
 
   - name: right_arm_velocity_controller
-    action_ns: follow_joint_trajectory
+    action_ns: command
     type: velocity_controllers/JointTrajectoryController
     joints:
     - yumi_robr_joint_1
