@@ -30,17 +30,36 @@ joint_state_controller:
   type: joint_state_controller/JointStateController
   publish_rate: 50
 controller_list:
-  - name: /yumi/egm/joint_velocity_trajectory_controller
+  - name: /yumi/egm/joint_group_velocity_controller
+    type: velocity_controllers/JointGroupVelocityController
+    action_ns: command
+    joints:
+      - yumi_robl_joint_1
+      - yumi_robl_joint_2
+      - yumi_robl_joint_7
+      - yumi_robl_joint_3
+      - yumi_robl_joint_4
+      - yumi_robl_joint_5
+      - yumi_robl_joint_6
+      - yumi_robr_joint_1
+      - yumi_robr_joint_2
+      - yumi_robr_joint_3
+      - yumi_robr_joint_4
+      - yumi_robr_joint_5
+      - yumi_robr_joint_6
+      - yumi_robr_joint_7
+
+  - name: yumi/egm/joint_velocity_trajectory_controller
     action_ns: follow_joint_trajectory
     type: FollowJointTrajectory
     joints:
       - yumi_robl_joint_1
       - yumi_robl_joint_2
+      - yumi_robl_joint_7
       - yumi_robl_joint_3
       - yumi_robl_joint_4
       - yumi_robl_joint_5
       - yumi_robl_joint_6
-      - yumi_robl_joint_7
       - yumi_robr_joint_1
       - yumi_robr_joint_2
       - yumi_robr_joint_3
