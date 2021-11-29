@@ -9,38 +9,39 @@ generic_hw_control_loop:
 # Settings for ros_control hardware interface
 hardware_interface:
   joints:
-      - yumi_robl_joint_1
-      - yumi_robl_joint_2
-      - yumi_robl_joint_3
-      - yumi_robl_joint_4
-      - yumi_robl_joint_5
-      - yumi_robl_joint_6
-      - yumi_robl_joint_7
-      - yumi_robr_joint_1
-      - yumi_robr_joint_2
-      - yumi_robr_joint_3
-      - yumi_robr_joint_4
-      - yumi_robr_joint_5
-      - yumi_robr_joint_6
-      - yumi_robr_joint_7
+    - yumi_robl_joint_1
+    - yumi_robl_joint_2
+    - yumi_robl_joint_3
+    - yumi_robl_joint_4
+    - yumi_robl_joint_5
+    - yumi_robl_joint_6
+    - yumi_robl_joint_7
+    - yumi_robr_joint_1
+    - yumi_robr_joint_2
+    - yumi_robr_joint_3
+    - yumi_robr_joint_4
+    - yumi_robr_joint_5
+    - yumi_robr_joint_6
+    - yumi_robr_joint_7
   sim_control_mode: 1  # 0: position, 1: velocity
 # Publish all joint states
 # Creates the /joint_states topic necessary in ROS
 joint_state_controller:
   type: joint_state_controller/JointStateController
   publish_rate: 50
+
 controller_list:
-  - name: /yumi/egm/joint_group_velocity_controller
-    type: velocity_controllers/JointGroupVelocityController
-    action_ns: command
+  - name: /yumi/egm/jnt_traj_vel_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
     joints:
       - yumi_robl_joint_1
       - yumi_robl_joint_2
-      - yumi_robl_joint_7
       - yumi_robl_joint_3
       - yumi_robl_joint_4
       - yumi_robl_joint_5
       - yumi_robl_joint_6
+      - yumi_robl_joint_7
       - yumi_robr_joint_1
       - yumi_robr_joint_2
       - yumi_robr_joint_3
@@ -49,21 +50,428 @@ controller_list:
       - yumi_robr_joint_6
       - yumi_robr_joint_7
 
-  - name: yumi/egm/joint_velocity_trajectory_controller
-    action_ns: follow_joint_trajectory
-    type: FollowJointTrajectory
-    joints:
-      - yumi_robl_joint_1
-      - yumi_robl_joint_2
-      - yumi_robl_joint_7
-      - yumi_robl_joint_3
-      - yumi_robl_joint_4
-      - yumi_robl_joint_5
-      - yumi_robl_joint_6
-      - yumi_robr_joint_1
-      - yumi_robr_joint_2
-      - yumi_robr_joint_3
-      - yumi_robr_joint_4
-      - yumi_robr_joint_5
-      - yumi_robr_joint_6
-      - yumi_robr_joint_7
+  # - name: /yumi/egm/jnt_traj_vel_controller_l
+  #   action_ns: follow_joint_trajectory
+  #   type: FollowJointTrajectory
+  #   joints:
+  #     - yumi_robl_joint_1
+  #     - yumi_robl_joint_2
+  #     - yumi_robl_joint_3
+  #     - yumi_robl_joint_4
+  #     - yumi_robl_joint_5
+  #     - yumi_robl_joint_6
+  #     - yumi_robl_joint_7
+  # - name: /yumi/egm/jnt_traj_vel_controller_r
+  #   action_ns: follow_joint_trajectory
+  #   type: FollowJointTrajectory
+  #   joints:
+  #     - yumi_robr_joint_1
+  #     - yumi_robr_joint_2
+  #     - yumi_robr_joint_3
+  #     - yumi_robr_joint_4
+  #     - yumi_robr_joint_5
+  #     - yumi_robr_joint_6
+  #     - yumi_robr_joint_7
+
+
+  # - name: /yumi/egm/jnt_traj_pos_controller_l
+  #   action_ns: follow_joint_trajectory
+  #   type: FollowJointTrajectory
+  #   joints:
+  #     - yumi_robl_joint_1
+  #     - yumi_robl_joint_2
+  #     - yumi_robl_joint_3
+  #     - yumi_robl_joint_4
+  #     - yumi_robl_joint_5
+  #     - yumi_robl_joint_6
+  #     - yumi_robl_joint_7
+  # - name: /yumi/egm/jnt_traj_pos_controller_r
+  #   action_ns: follow_joint_trajectory
+  #   type: FollowJointTrajectory
+  #   joints:
+  #     - yumi_robr_joint_1
+  #     - yumi_robr_joint_2
+  #     - yumi_robr_joint_3
+  #     - yumi_robr_joint_4
+  #     - yumi_robr_joint_5
+  #     - yumi_robr_joint_6
+  #     - yumi_robr_joint_7
+  # - name: /yumi/egm/jnt_traj_pos_controller
+  #   action_ns: follow_joint_trajectory
+  #   type: FollowJointTrajectory
+  #   joints:
+  #     - yumi_robl_joint_1
+  #     - yumi_robl_joint_2
+  #     - yumi_robl_joint_3
+  #     - yumi_robl_joint_4
+  #     - yumi_robl_joint_5
+  #     - yumi_robl_joint_6
+  #     - yumi_robl_joint_7
+  #     - yumi_robr_joint_1
+  #     - yumi_robr_joint_2
+  #     - yumi_robr_joint_3
+  #     - yumi_robr_joint_4
+  #     - yumi_robr_joint_5
+  #     - yumi_robr_joint_6
+  #     - yumi_robr_joint_7
+
+# jnt_traj_vel_controller_l:
+#   type: velocity_controllers/JointTrajectoryController
+#   joints:
+#     - yumi_robl_joint_1
+#     - yumi_robl_joint_2
+#     - yumi_robl_joint_3
+#     - yumi_robl_joint_4
+#     - yumi_robl_joint_5
+#     - yumi_robl_joint_6
+#     - yumi_robl_joint_7
+#   gains:
+#     yumi_robl_joint_1:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robl_joint_2:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robl_joint_3:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robl_joint_4:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robl_joint_5:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robl_joint_6:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robl_joint_7:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+# jnt_traj_vel_controller_r:
+#   type: velocity_controllers/JointTrajectoryController
+#   joints:
+#     - yumi_robr_joint_1
+#     - yumi_robr_joint_2
+#     - yumi_robr_joint_3
+#     - yumi_robr_joint_4
+#     - yumi_robr_joint_5
+#     - yumi_robr_joint_6
+#     - yumi_robr_joint_7
+#   gains:
+#     yumi_robr_joint_1:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robr_joint_2:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robr_joint_3:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robr_joint_4:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robr_joint_5:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robr_joint_6:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robr_joint_7:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+# jnt_traj_vel_controller:
+#   type: velocity_controllers/JointTrajectoryController
+#   joints:
+#     - yumi_robl_joint_1
+#     - yumi_robl_joint_2
+#     - yumi_robl_joint_3
+#     - yumi_robl_joint_4
+#     - yumi_robl_joint_5
+#     - yumi_robl_joint_6
+#     - yumi_robl_joint_7
+#     - yumi_robr_joint_1
+#     - yumi_robr_joint_2
+#     - yumi_robr_joint_3
+#     - yumi_robr_joint_4
+#     - yumi_robr_joint_5
+#     - yumi_robr_joint_6
+#     - yumi_robr_joint_7
+#   gains:
+#     yumi_robl_joint_1:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robl_joint_2:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robl_joint_3:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robl_joint_4:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robl_joint_5:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robl_joint_6:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robl_joint_7:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robr_joint_1:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robr_joint_2:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robr_joint_3:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robr_joint_4:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robr_joint_5:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robr_joint_6:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robr_joint_7:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+# jnt_traj_pos_controller_r:
+#   type: position_controllers/JointTrajectoryController
+#   joints:
+#     - yumi_robr_joint_1
+#     - yumi_robr_joint_2
+#     - yumi_robr_joint_3
+#     - yumi_robr_joint_4
+#     - yumi_robr_joint_5
+#     - yumi_robr_joint_6
+#     - yumi_robr_joint_7
+#   gains:
+#     yumi_robr_joint_1:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robr_joint_2:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robr_joint_3:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robr_joint_4:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robr_joint_5:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robr_joint_6:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robr_joint_7:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+# jnt_traj_pos_controller_l:
+#   type: position_controllers/JointTrajectoryController
+#   joints:
+#     - yumi_robl_joint_1
+#     - yumi_robl_joint_2
+#     - yumi_robl_joint_3
+#     - yumi_robl_joint_4
+#     - yumi_robl_joint_5
+#     - yumi_robl_joint_6
+#     - yumi_robl_joint_7
+#   gains:
+#     yumi_robl_joint_1:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robl_joint_2:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robl_joint_3:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robl_joint_4:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robl_joint_5:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robl_joint_6:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robl_joint_7:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+# jnt_traj_pos_controller:
+#   type: position_controllers/JointTrajectoryController
+#   joints:
+#     - yumi_robl_joint_1
+#     - yumi_robl_joint_2
+#     - yumi_robl_joint_3
+#     - yumi_robl_joint_4
+#     - yumi_robl_joint_5
+#     - yumi_robl_joint_6
+#     - yumi_robl_joint_7
+#     - yumi_robr_joint_1
+#     - yumi_robr_joint_2
+#     - yumi_robr_joint_3
+#     - yumi_robr_joint_4
+#     - yumi_robr_joint_5
+#     - yumi_robr_joint_6
+#     - yumi_robr_joint_7
+#   gains:
+#     yumi_robl_joint_1:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robl_joint_2:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robl_joint_3:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robl_joint_4:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robl_joint_5:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robl_joint_6:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robl_joint_7:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robr_joint_1:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robr_joint_2:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robr_joint_3:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robr_joint_4:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robr_joint_5:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robr_joint_6:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1
+#     yumi_robr_joint_7:
+#       p: 100
+#       d: 1
+#       i: 1
+#       i_clamp: 1

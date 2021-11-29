@@ -1,25 +1,87 @@
 controller_list:
-  - name: left_arm_velocity_controller
+  - name: jnt_traj_vel_controller_l
     action_ns: follow_joint_trajectory
     type: FollowJointTrajectory
     default: True
     joints:
       - yumi_robl_joint_1
       - yumi_robl_joint_2
-      - yumi_robl_joint_7
       - yumi_robl_joint_3
       - yumi_robl_joint_4
       - yumi_robl_joint_5
       - yumi_robl_joint_6
-  - name: right_arm_velocity_controller
+      - yumi_robl_joint_7
+  - name: jnt_traj_vel_controller_r
     action_ns: follow_joint_trajectory
     type: FollowJointTrajectory
     default: True
     joints:
       - yumi_robr_joint_1
       - yumi_robr_joint_2
-      - yumi_robr_joint_7
       - yumi_robr_joint_3
       - yumi_robr_joint_4
       - yumi_robr_joint_5
       - yumi_robr_joint_6
+      - yumi_robr_joint_7
+  - name: jnt_traj_vel_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: True
+    joints:
+      - yumi_robl_joint_1
+      - yumi_robl_joint_2
+      - yumi_robl_joint_3
+      - yumi_robl_joint_4
+      - yumi_robl_joint_5
+      - yumi_robl_joint_6
+      - yumi_robl_joint_7
+      - yumi_robr_joint_1
+      - yumi_robr_joint_2
+      - yumi_robr_joint_3
+      - yumi_robr_joint_4
+      - yumi_robr_joint_5
+      - yumi_robr_joint_6
+      - yumi_robr_joint_7
+  - name: jnt_traj_pos_controller_r
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: True
+    joints:
+      - yumi_robr_joint_1
+      - yumi_robr_joint_2
+      - yumi_robr_joint_3
+      - yumi_robr_joint_4
+      - yumi_robr_joint_5
+      - yumi_robr_joint_6
+      - yumi_robr_joint_7
+  - name: jnt_traj_pos_controller_l
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: True
+    joints:
+      - yumi_robl_joint_1
+      - yumi_robl_joint_2
+      - yumi_robl_joint_3
+      - yumi_robl_joint_4
+      - yumi_robl_joint_5
+      - yumi_robl_joint_6
+      - yumi_robl_joint_7
+  - name: jnt_traj_pos_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    default: True
+    joints:
+      - yumi_robl_joint_1
+      - yumi_robl_joint_2
+      - yumi_robl_joint_3
+      - yumi_robl_joint_4
+      - yumi_robl_joint_5
+      - yumi_robl_joint_6
+      - yumi_robl_joint_7
+      - yumi_robr_joint_1
+      - yumi_robr_joint_2
+      - yumi_robr_joint_3
+      - yumi_robr_joint_4
+      - yumi_robr_joint_5
+      - yumi_robr_joint_6
+      - yumi_robr_joint_7

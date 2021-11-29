@@ -7,5 +7,5 @@ moveit_setup_assistant_config:
     relative_path: config/yumi.srdf
   CONFIG:
     author_name: s
-    author_email: s@s.com
-    generated_timestamp: 1637585471
+    author_email: s@s.org
+    generated_timestamp: 1638178302

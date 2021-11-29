@@ -39,6 +39,7 @@
       <robotNamespace>/yumi</robotNamespace>
     </plugin>
   </gazebo>
+  <!--yumi-->
   <link name="world"/>
   <joint name="world_joint" type="fixed">
     <parent link="world"/>
@@ -134,7 +135,7 @@
     </collision>
   </link>
   <!-- joint between link_2_r and link_3_r -->
-  <joint name="yumi_robr_joint_7" type="revolute">
+  <joint name="yumi_robr_joint_3" type="revolute">
     <parent link="yumi_link_2_r"/>
     <child link="yumi_link_3_r"/>
     <origin rpy="-1.5707963267948966 0.0 0.0" xyz="-0.03 0.17283 0.0"/>
@@ -164,7 +165,7 @@
     </collision>
   </link>
   <!-- joint between link_3_r and link_4_r -->
-  <joint name="yumi_robr_joint_3" type="revolute">
+  <joint name="yumi_robr_joint_4" type="revolute">
     <parent link="yumi_link_3_r"/>
     <child link="yumi_link_4_r"/>
     <origin rpy="1.5707963267948966 -1.5707963267948966 0.0" xyz="-0.04188 0.0 0.07873"/>
@@ -194,7 +195,7 @@
     </collision>
   </link>
   <!-- joint between link_4_r and link_5_r -->
-  <joint name="yumi_robr_joint_4" type="revolute">
+  <joint name="yumi_robr_joint_5" type="revolute">
     <parent link="yumi_link_4_r"/>
     <child link="yumi_link_5_r"/>
     <origin rpy="-1.5707963267948966 0.0 0.0" xyz="0.0405 0.16461 0.0"/>
@@ -224,7 +225,7 @@
     </collision>
   </link>
   <!-- joint between link_5_r and link_6_r -->
-  <joint name="yumi_robr_joint_5" type="revolute">
+  <joint name="yumi_robr_joint_6" type="revolute">
     <parent link="yumi_link_5_r"/>
     <child link="yumi_link_6_r"/>
     <origin rpy="1.5707963267948966 0.0 0.0" xyz="-0.027 0 0.10039"/>
@@ -254,7 +255,7 @@
     </collision>
   </link>
   <!-- joint between link_6_r and link_7_r -->
-  <joint name="yumi_robr_joint_6" type="revolute">
+  <joint name="yumi_robr_joint_7" type="revolute">
     <parent link="yumi_link_6_r"/>
     <child link="yumi_link_7_r"/>
     <origin rpy="-1.5707963267948966 0.0 0.0" xyz="0.027 0.029 0.0"/>
@@ -345,7 +346,7 @@
     </collision>
   </link>
   <!-- joint between link_2_l and link_3_l -->
-  <joint name="yumi_robl_joint_7" type="revolute">
+  <joint name="yumi_robl_joint_3" type="revolute">
     <parent link="yumi_link_2_l"/>
     <child link="yumi_link_3_l"/>
     <origin rpy="-1.5707963267948966 0.0 0.0" xyz="-0.03 0.17283 0.0"/>
@@ -375,7 +376,7 @@
     </collision>
   </link>
   <!-- joint between link_3_l and link_4_l -->
-  <joint name="yumi_robl_joint_3" type="revolute">
+  <joint name="yumi_robl_joint_4" type="revolute">
     <parent link="yumi_link_3_l"/>
     <child link="yumi_link_4_l"/>
     <origin rpy="1.5707963267948966 -1.5707963267948966 0.0" xyz="-0.04188 0.0 0.07873"/>
@@ -405,7 +406,7 @@
     </collision>
   </link>
   <!-- joint between link_4_l and link_5_l -->
-  <joint name="yumi_robl_joint_4" type="revolute">
+  <joint name="yumi_robl_joint_5" type="revolute">
     <parent link="yumi_link_4_l"/>
     <child link="yumi_link_5_l"/>
     <origin rpy="-1.5707963267948966 0.0 0.0" xyz="0.0405 0.16461 0.0"/>
@@ -435,7 +436,7 @@
     </collision>
   </link>
   <!-- joint between link_5_l and link_6_l -->
-  <joint name="yumi_robl_joint_5" type="revolute">
+  <joint name="yumi_robl_joint_6" type="revolute">
     <parent link="yumi_link_5_l"/>
     <child link="yumi_link_6_l"/>
     <origin rpy="1.5707963267948966 0.0 0.0" xyz="-0.027 0 0.10039"/>
@@ -465,7 +466,7 @@
     </collision>
   </link>
   <!-- joint between link_6_l and link_7_l -->
-  <joint name="yumi_robl_joint_6" type="revolute">
+  <joint name="yumi_robl_joint_7" type="revolute">
     <parent link="yumi_link_6_l"/>
     <child link="yumi_link_7_l"/>
     <origin rpy="-1.5707963267948966 0.0 0.0" xyz="0.027 0.029 0.0"/>

@@ -11,10 +11,8 @@
   <!-- Import Gazebo plugins -->
   <xacro:include filename="$(find yumi_description)/urdf/Gazebo/gazebo.urdf.xacro"/>
 
-  <xacro:arg name="arms_interface" default="VelocityJointInterface"/> 
-  <xacro:arg name="grippers_interface" default="EffortJointInterface"/> 
-  
-  <xacro:property name="yumi_parent" value="world" />
+  <!--yumi-->
+ 
   <link name="world"/>
   <joint name="world_joint" type="fixed">
     <parent link="world"/>
@@ -22,18 +20,17 @@
     <origin xyz="0 0 0.1" rpy="0 0 0" />
   </joint>
 
-  <!--yumi-->
-  <xacro:yumi name="yumi" hardware_interface="hardware_interface/$(arg arms_interface)" parent="world" >
+  <xacro:yumi name="yumi" hardware_interface="hardware_interface/VelocityJointInterface" parent="world" >
     <origin xyz="0 0 0.1" rpy="0 0 0" />
   </xacro:yumi>
 
   <!--right gripper-->
-  <xacro:yumi_servo_gripper name="gripper_r" hardware_interface="hardware_interface/$(arg grippers_interface)" parent="yumi_link_7_r">
+  <xacro:yumi_servo_gripper name="gripper_r" hardware_interface="hardware_interface/EffortJointInterface" parent="yumi_link_7_r">
     <origin xyz="0 0 0.007" rpy="0 0 ${PI}" />
   </xacro:yumi_servo_gripper>
 
   <!--left gripper-->
-  <xacro:yumi_servo_gripper name="gripper_l" hardware_interface="hardware_interface/$(arg grippers_interface)" parent="yumi_link_7_l">
+  <xacro:yumi_servo_gripper name="gripper_l" hardware_interface="hardware_interface/EffortJointInterface" parent="yumi_link_7_l">
     <origin xyz="0 0 0.007" rpy="0 0 ${PI}" />
   </xacro:yumi_servo_gripper>
 

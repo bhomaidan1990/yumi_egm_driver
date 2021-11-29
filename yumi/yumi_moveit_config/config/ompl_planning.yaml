@@ -186,6 +186,7 @@ right_arm:
   projection_evaluator: joints(yumi_robr_joint_1,yumi_robr_joint_2)
   longest_valid_segment_fraction: 0.005
 both_arms:
+  default_planner_config: RRTConnect
   planner_configs:
     - AnytimePathShortening
     - SBL
@@ -213,7 +214,7 @@ both_arms:
     - SPARStwo
   projection_evaluator: joints(yumi_robl_joint_1,yumi_robl_joint_2)
   longest_valid_segment_fraction: 0.005
-left_gripper:
+gripper_left_ee:
   planner_configs:
     - AnytimePathShortening
     - SBL
@@ -239,7 +240,7 @@ left_gripper:
     - LazyPRMstar
     - SPARS
     - SPARStwo
-right_gripper:
+gripper_right_ee:
   planner_configs:
     - AnytimePathShortening
     - SBL
