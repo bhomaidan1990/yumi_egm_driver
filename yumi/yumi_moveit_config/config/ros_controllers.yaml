@@ -31,7 +31,29 @@ joint_state_controller:
   publish_rate: 50
 
 controller_list:
-  - name: /yumi/egm/jnt_traj_vel_controller
+  - name: /yumi/egm/left_arm_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    joints:
+      - yumi_robl_joint_1
+      - yumi_robl_joint_2
+      - yumi_robl_joint_3
+      - yumi_robl_joint_4
+      - yumi_robl_joint_5
+      - yumi_robl_joint_6
+      - yumi_robl_joint_7
+  - name: /yumi/egm/right_arm_controller
+    action_ns: follow_joint_trajectory
+    type: FollowJointTrajectory
+    joints:
+      - yumi_robr_joint_1
+      - yumi_robr_joint_2
+      - yumi_robr_joint_3
+      - yumi_robr_joint_4
+      - yumi_robr_joint_5
+      - yumi_robr_joint_6
+      - yumi_robr_joint_7
+  - name: /yumi/egm/both_arms_controller
     action_ns: follow_joint_trajectory
     type: FollowJointTrajectory
     joints:
