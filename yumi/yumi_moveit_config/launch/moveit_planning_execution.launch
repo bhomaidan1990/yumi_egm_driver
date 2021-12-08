@@ -49,6 +49,7 @@
 
   <include file="$(find yumi_moveit_config)/launch/move_group.launch">
     <arg name="publish_monitored_planning_scene" value="true" />
+    <!-- <arg name="pipeline" value="chomp" /> -->
   </include>
 
   <include file="$(find yumi_moveit_config)/launch/moveit_rviz.launch">

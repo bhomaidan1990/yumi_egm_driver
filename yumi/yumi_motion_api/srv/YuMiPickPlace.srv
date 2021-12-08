@@ -1,0 +1,5 @@
+sensor_msgs/JointState pick_joints
+sensor_msgs/JointState place_joints
+int16 arm
+---
+bool success

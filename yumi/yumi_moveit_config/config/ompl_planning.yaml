@@ -186,7 +186,6 @@ right_arm:
   projection_evaluator: joints(yumi_robr_joint_1,yumi_robr_joint_2)
   longest_valid_segment_fraction: 0.005
 both_arms:
-  default_planner_config: RRTConnect
   planner_configs:
     - AnytimePathShortening
     - SBL

@@ -1,0 +1,4 @@
+geometry_msgs/Pose goalPose
+int16 arm
+---
+bool success

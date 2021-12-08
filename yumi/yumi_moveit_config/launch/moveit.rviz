@@ -38,7 +38,7 @@ Visualization Manager:
       Plane Cell Count: 10
       Reference Frame: <Fixed Frame>
       Value: true
-    - Acceleration_Scaling_Factor: 0.5
+    - Acceleration_Scaling_Factor: 0.9
       Class: moveit_rviz_plugin/MotionPlanning
       Enabled: true
       Move Group Namespace: ""
@@ -204,7 +204,7 @@ Visualization Manager:
         Goal State Color: 250; 128; 0
         Interactive Marker Size: 0
         Joint Violation Color: 255; 0; 255
-        Planning Group: both_arms
+        Planning Group: left_arm
         Query Goal State: true
         Query Start State: false
         Show Workspace: false
@@ -506,9 +506,9 @@ Visualization Manager:
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.25000035762786865
+      Pitch: 0.23000065982341766
       Target Frame: world
-      Yaw: 6.259965419769287
+      Yaw: 0.006781542673707008
     Saved: ~
 Window Geometry:
   Displays:
