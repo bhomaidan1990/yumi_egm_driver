@@ -116,9 +116,36 @@ def sys_init():
     """
     Initialize the system, auto_mode, motors_on, rapid_running, egm_settings_adjusted
     """
-    rospy.wait_for_service('/yumi/rws/set_motors_on')
-    set_motors_on = rospy.ServiceProxy("/yumi/rws/set_motors_on", TriggerWithResultCode)
-    set_motors_on()
+    # system_info = rospy.wait_for_message("/yumi/rws/system_states", SystemState, timeout=5)
+    # TODO: check this
+    auto_mode = True # system_info.auto_mode # 
+    # rapid_running = system_info.rapid_running
+    motors_on = False # system_info.motors_on #  
+    # print(auto_mode, motors_on)
+
+    if(not auto_mode):
+        print("xxxxxxxxxxxxx Robot in Manual Mode! Can't Initialize! xxxxxxxxxxxxx")
+        sys.exit()
+    else:
+        # Reset Program Pointer to main and Start RAPID
+        rospy.wait_for_service('/yumi/rws/pp_to_main')
+        rospy.wait_for_service('/yumi/rws/stop_rapid')
+        rospy.wait_for_service('/yumi/rws/start_rapid')
+        # set_motors_off= rospy.ServiceProxy("/yumi/rws/set_motors_off",TriggerWithResultCode)
+        stop_rapid    = rospy.ServiceProxy("/yumi/rws/stop_rapid"   , TriggerWithResultCode)
+        pp_to_main    = rospy.ServiceProxy("/yumi/rws/pp_to_main"   , TriggerWithResultCode)
+        start_rapid   = rospy.ServiceProxy("/yumi/rws/start_rapid"  , TriggerWithResultCode)
+        # Call the functionalities
+        stop_rapid()
+        pp_to_main()
+        time.sleep(1)
+        start_rapid()
+        # Turn Motors On
+        if(not motors_on):
+            rospy.wait_for_service('/yumi/rws/set_motors_on')
+            set_motors_on = rospy.ServiceProxy("/yumi/rws/set_motors_on", TriggerWithResultCode)
+            set_motors_on()
+
 
     # Calibrate Grippers
     calibrateGrippers()
@@ -346,15 +373,15 @@ def go_to_joints(joints_, arm):
 
     if arm == LEFT:
         cur_arm = group_l
-        controller_name="left_arm_controller"
+        controller_name = "left_arm_vel_controller"
 
     elif arm == RIGHT:
         cur_arm = group_r
-        controller_name="right_arm_controller"
+        controller_name ="right_arm_vel_controller"
 
     elif arm == BOTH:
         cur_arm = group_both
-        controller_name="both_arms_controller"
+        controller_name ="both_arms_vel_controller"
 
     else:
         print("Wrong Arms Selection, Left, Right, or BOTH are only accepted")
@@ -373,7 +400,9 @@ def go_to_joints(joints_, arm):
     changeEGMSettings()
     start_egm()
 
-    # switch_controller(start_controllers=controller_name, strictness=1, start_asap=False, timeout=0.0)
+    # print("Controller_Name:", controller_name)
+
+    # switch_controller(start_controllers=list(controller_name), stop_controllers=[""], strictness=1, start_asap=False, timeout=0.0)
     controller_conf = "start_controllers: [{}] \nstop_controllers: [''] \nstrictness: 1 \nstart_asap: false \ntimeout: 0.0".format(controller_name)
     import subprocess
     subprocess.run(["rosservice", "call", "/yumi/egm/controller_manager/switch_controller", controller_conf])
@@ -401,23 +430,24 @@ def go_to_pose(pose_, arm):
     # TODO: check pose or joint egm
     rospy.wait_for_service("/yumi/rws/sm_addin/start_egm_joint")
     rospy.wait_for_service("/yumi/rws/sm_addin/stop_egm")
-    rospy.wait_for_service("/yumi/egm/controller_manager/switch_controller")
+    # rospy.wait_for_service("/yumi/egm/controller_manager/switch_controller")
 
     start_egm = rospy.ServiceProxy("/yumi/rws/sm_addin/start_egm_joint", TriggerWithResultCode)
     stop_egm = rospy.ServiceProxy("/yumi/rws/sm_addin/stop_egm", TriggerWithResultCode)
+    
     # switch_controller = rospy.ServiceProxy("/yumi/egm/controller_manager/switch_controller", SwitchController)
 
     stop_egm()
 
     if arm == LEFT:
         cur_arm = group_l
-        controller_name="left_arm_controller"
+        controller_name="left_arm_vel_controller"
     elif arm == RIGHT:
         cur_arm = group_r
-        controller_name="right_arm_controller"
+        controller_name="right_arm_vel_controller"
     elif arm == BOTH:
         cur_arm = group_both
-        controller_name="both_arms_controller"
+        controller_name="both_arms_vel_controller"
     else:
         print("Wrong Arms Selection, Left, Right, or BOTH are only accepted")
         sys.exit()
@@ -434,7 +464,9 @@ def go_to_pose(pose_, arm):
     changeEGMSettings()
     start_egm()
 
-    # switch_controller(start_controllers=controller_name, strictness=1, start_asap=False, timeout=0.0)
+    # time.sleep(0.5)
+    # switch_controller(start_controllers=list(controller_name), stop_controllers=[""], strictness=1, start_asap=False, timeout=0.0)
+
     controller_conf = "start_controllers: [{}] \nstop_controllers: [''] \nstrictness: 1 \nstart_asap: false \ntimeout: 0.0".format(controller_name)
     import subprocess
     subprocess.run(["rosservice", "call", "/yumi/egm/controller_manager/switch_controller", controller_conf])

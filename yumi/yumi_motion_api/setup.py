@@ -9,7 +9,7 @@ setup_args = generate_distutils_setup(
     package_dir={'': '.'},
     requires=['rospy', 'moveit_core', 'moveit_commander', 'moveit_msgs', 'moveit_ros_planning_interface', 'std_msgs',
               'geometry_msgs','sensor_msgs', 'rospy_message_converter','tf','message_generation', 'message_runtime',
-               'abb_robot_driver']
+              'abb_rapid_msgs', 'abb_robot_driver']
 )
 
 setup(**setup_args)

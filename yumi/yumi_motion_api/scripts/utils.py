@@ -141,6 +141,7 @@ def sys_init():
         # Call the functionalities
         stop_rapid()
         pp_to_main()
+        time.sleep(1)
         start_rapid()
         # Turn Motors On
         if(not motors_on):
@@ -356,7 +357,10 @@ def go_to_joints(positions, arm):
 
     cur_arm.go(wait=True)
     rospy.sleep(3)
-    
-# sys_init()
-# motion_init()
-# grasp(3, 0) # Both
+
+if(__name__ == "__main__"):
+    rospy.init_node('yumi_init')
+    sys_init()
+    # motion_init()
+    # grasp(3, 0) # Both
+

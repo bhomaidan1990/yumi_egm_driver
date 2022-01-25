@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>yumi_rapid_interface</name>
+  <version>0.0.0</version>
+  <description>The yumi_rapid_interface package</description>
+
+  <maintainer email="s@s.com">belal</maintainer>
+
+  <license>LGPLv2.1</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>rospy</build_depend>
+  <!-- <build_depend>std_msgs</build_depend> -->
+  <build_depend>message_generation</build_depend>
+  <build_depend>abb_rapid_msgs</build_depend>
+  <build_depend>abb_robot_msgs</build_depend>
+  <build_depend>abb_rapid_sm_addin_msgs</build_depend>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <!-- <depend>rospy_message_converter</depend> -->
+  <depend>abb_robot_driver</depend>
+
+  <build_export_depend>rospy</build_export_depend>
+  <!-- <build_export_depend>std_msgs</build_export_depend> -->
+  <build_export_depend>message_generation</build_export_depend>
+  <build_export_depend>abb_rapid_msgs</build_export_depend>
+  <build_export_depend>abb_robot_msgs</build_export_depend>
+  <build_export_depend>abb_rapid_sm_addin_msgs</build_export_depend>
+
+  <exec_depend>rospy</exec_depend>
+  <!-- <exec_depend>std_msgs</exec_depend> -->
+  <exec_depend>message_runtime</exec_depend>
+  <exec_depend>abb_rapid_msgs</exec_depend>
+  <exec_depend>abb_robot_msgs</exec_depend>
+  <exec_depend>abb_rapid_sm_addin_msgs</exec_depend>
+
+</package>
