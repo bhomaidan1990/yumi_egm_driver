@@ -16,6 +16,9 @@ class PickPlaceRAPID():
         """
         self.sys_ready = False
 
+    def remove(self, string):
+        return "".join(string.split())
+
     def sys_init(self):
         """
         Initialize the system, auto_mode, motors_on, rapid_running
@@ -57,12 +60,15 @@ class PickPlaceRAPID():
         rospy.wait_for_service('/yumi/rws/pp_to_main')
         rospy.wait_for_service('/yumi/rws/set_motors_on')
         rospy.wait_for_service('/yumi/rws/start_rapid')
+        rospy.wait_for_service('/yumi/rws/get_rapid_symbol')
         rospy.wait_for_service('/yumi/rws/set_rapid_symbol')
 
         set_motors_on = rospy.ServiceProxy("/yumi/rws/set_motors_on", TriggerWithResultCode)
         stop_rapid    = rospy.ServiceProxy("/yumi/rws/stop_rapid"   , TriggerWithResultCode)
         pp_to_main    = rospy.ServiceProxy("/yumi/rws/pp_to_main"   , TriggerWithResultCode)
         start_rapid   = rospy.ServiceProxy("/yumi/rws/start_rapid"  , TriggerWithResultCode)
+        # TODO: examine get_rapid_symbol
+        get_symbol  = rospy.ServiceProxy('/yumi/rws/get_rapid_symbol', GetRAPIDSymbol)
         set_symbol  = rospy.ServiceProxy('/yumi/rws/set_rapid_symbol', SetRAPIDSymbol)
 
         # Task
@@ -73,6 +79,7 @@ class PickPlaceRAPID():
         else:
             task_ = task_R
 
+        symbol_val = self.remove(symbol_val)
         # RAPID Symbol Path message
         symbol_path_ = RAPIDSymbolPath()
         symbol_path_.task = task_
@@ -81,8 +88,19 @@ class PickPlaceRAPID():
 
         stop_rapid()
 
+        # # Response Reference:
+        """
+        https://github.com/ros-industrial/abb_robot_driver_interfaces/blob/master/abb_robot_msgs/msg/ServiceResponses.msg
+        """
         # Set RAPID Symbol
-        set_symbol(symbol_path_, symbol_val)
+        response = get_symbol(symbol_path_)
+        # for thing in response:
+        #     # str value, uint16 result_code, str message
+        print('\n {} response\n'.format(symbol_name), response.value)
+        # print('\n', symbol_name, symbol_val, '\n')
+        exam = set_symbol(symbol_path_, symbol_val) # response.value
+        # for thing in exam:
+        print('\n {} exam \n'.format(symbol_name), exam)
 
         pp_to_main()
         set_motors_on()
@@ -115,7 +133,7 @@ class PickPlaceRAPID():
         ---
         return completed point details.
         """
-        eax_all = ", 9E+09, 9E+09, 9E+09, 9E+09, 9E+09]]"
+        eax_all = ",9E9,9E9,9E9,9E9,9E9]]" # ",9E+09,9E+09,9E+09,9E+09,9E+09]]"
         # remove spaces at end (if any).
         pattern = pattern.rstrip()
         return pattern[:-2]+eax_all
@@ -127,7 +145,7 @@ class PickPlaceRAPID():
         Parameters:
         @param pick_pt:  str, "[[x, y, z], [q1, q2, q3, q4], [cfg1, cfg4, cfg6, cfgx], [eax_a]]"
         @param place_pt:    str, "[[x, y, z], [q1, q2, q3, q4], [cfg1, cfg4, cfg6, cfgx], [eax_a]]"
-        @param speed: str, has the shape "vspeed", where the speed in mm/sec can be 10, 50, 100, ..., 1000
+        @param speed: str, [V_TCP(mm/s), V_ReOrient (deg/sec), V_ext_lin_axis (mm/s), V_rot_ext_axis (mm/sec)].
         @param pick_ap_pt:  str, "[[x, y, z], [q1, q2, q3, q4], [cfg1, cfg4, cfg6, cfgx], [eax_a]]"
         @param place_ap_pt: str, "[[x, y, z], [q1, q2, q3, q4], [cfg1, cfg4, cfg6, cfgx], [eax_a]]"
         @param left: bool, True for left arm, False for the usage of the right arm.
@@ -146,9 +164,17 @@ class PickPlaceRAPID():
         if place_ap_pt is not None:
             self.set_RAPID_symbol("place_ap", self.eax_completer(place_ap_pt), left=left)
         
+        """
+        The speed data is defined with the following velocities:
+        [v1, v2, v3, v4]
+        - v1 mm/s for the TCP.
+        - v2 degrees/s for reorientation of the tool.
+        - v3 mm/s for linear external axes.
+        - v4 degrees/s for rotating external axes.
+        """
+        self.set_RAPID_symbol("pp_speed", speed, left=left)
         self.set_RAPID_symbol("pickpoint", self.eax_completer(pick_pt), left=left)
         self.set_RAPID_symbol("placepoint", self.eax_completer(place_pt), left=left)
-        self.set_RAPID_symbol("pp_speed", speed, left=left)
         self.set_run_RAPID_routine(task=task_, routine='pickplace')
 
     def usage_and_quit(self):
@@ -161,7 +187,7 @@ class PickPlaceRAPID():
         """
         print(" --pick_pt str, \"[[x, y, z], [q1, q2, q3, q4], [cfg1, cfg4, cfg6, cfgx], [eax_a]]\"")
         print(" --place_pt str, \"[[x, y, z], [q1, q2, q3, q4], [cfg1, cfg4, cfg6, cfgx], [eax_a]]\"")
-        print(" --speed str, has the shape \"vspeed\", where the speed in mm/sec can be 10, 50, 100, ..., 1000")
+        print(" --speed str, [V_TCP(mm/s), V_ReOrient (deg/sec), V_ext_lin_axis (mm/s), V_rot_ext_axis (mm/sec)].")
         print(" --pick_ap_pt str, \"[[x, y, z], [q1, q2, q3, q4], [cfg1, cfg4, cfg6, cfgx], [eax_a]]\"")
         print(" --place_ap_pt str, \"[[x, y, z], [q1, q2, q3, q4], [cfg1, cfg4, cfg6, cfgx], [eax_a]]\"")
         print(" --left bool, True for left arm, False to use right arm")
@@ -178,9 +204,9 @@ if __name__ == '__main__':
       PP_RAPID_.usage_and_quit()
 
     # Default Parameters
-    pick_pt  = "[[0.285266, 0.3534495, 0.1069714], [0.005935209, 0.9999219, 0.01035514, 0.003705649], [-1.0, 1.0, 2.0, 4.0], [156.847]]"
-    place_pt = "[[0.399374, 0.05215265, 0.1108838], [0.005965178, 0.9999416, -0.006217764, -0.00652423], [-1.0, 1.0, 1.0, 4.0], [-160.319]]"
-    speed = "v1000"
+    pick_pt  = "[[285.266, 353.4495,106.9714],[0.005935209, 0.9999219,0.01035514, 0.003705649], [-1,1,2,4], [156.847]]"
+    place_pt = "[[399.374,52.15265,110.8838],[0.005965178, 0.9999416,-0.006217764, -0.00652423], [-1,1,1,4], [-160.319]]"
+    speed = "[100,500,5000,1000]"
     pick_ap_pt  = None
     place_ap_pt = None
     left = False
@@ -191,7 +217,7 @@ if __name__ == '__main__':
         elif opt in ("-a", "--pick_pt"):
             pick_pt = arg
         elif opt in ("-d", "--place_pt"):
-            place_pt = arg  
+            place_pt = arg 
         elif opt in ("-s", "--speed"):
             speed = arg
         elif opt in ("-b", "--pick_ap_pt"):
